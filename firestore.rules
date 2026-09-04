@@ -24,7 +24,8 @@ service cloud.firestore {
     }
 
     match /usuarios/{uid} {
-      allow read: if signedIn() && (request.auth.uid == uid || isAdmin() || isAuditor());
+      allow read: if signedIn()
+        && (request.auth.uid == uid || isAdmin() || isAuditor());
 
       allow create: if signedIn()
         && request.auth.uid == uid
@@ -48,7 +49,8 @@ service cloud.firestore {
     }
 
     match /favoritos/{favoritoId} {
-      allow read: if signedIn() && resource.data.usuarioId == request.auth.uid;
+      allow read: if signedIn()
+        && resource.data.usuarioId == request.auth.uid;
 
       allow create: if signedIn()
         && request.resource.data.usuarioId == request.auth.uid;
@@ -62,14 +64,18 @@ service cloud.firestore {
     }
 
     match /rutas/{rutaId} {
-      allow read: if signedIn() && resource.data.usuarioId == request.auth.uid;
+      allow read: if signedIn()
+        && resource.data.usuarioId == request.auth.uid;
 
       allow create: if signedIn()
         && request.resource.data.usuarioId == request.auth.uid;
 
-      allow update, delete: if signedIn()
+      allow update: if signedIn()
         && resource.data.usuarioId == request.auth.uid
         && request.resource.data.usuarioId == request.auth.uid;
+
+      allow delete: if signedIn()
+        && resource.data.usuarioId == request.auth.uid;
     }
 
     match /auditoria/{registroId} {
