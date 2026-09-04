@@ -110,6 +110,15 @@ class FirebaseRepository implements EcoRutaRepository {
   @override
   Future<List<Destination>> getDestinations() async {
     final snapshot = await _db.collection('destinos').get();
+
+    // Durante la primera configuración del proyecto Firestore puede estar
+    // vacío. En ese caso la interfaz sigue siendo completamente navegable con
+    // el catálogo local de demostración, mientras autenticación, favoritos y
+    // rutas continúan usando el backend real.
+    if (snapshot.docs.isEmpty) {
+      return List<Destination>.from(sampleDestinations);
+    }
+
     final destinations = snapshot.docs
         .map((doc) => Destination.fromMap(doc.id, doc.data()))
         .where((destination) => destination.active)
