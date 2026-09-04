@@ -39,7 +39,11 @@ def write_native_splash(splash_bytes: bytes) -> None:
 
     launch_xml = '''<?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="#FFFDF7" />
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#FFFDF7" />
+        </shape>
+    </item>
     <item>
         <bitmap
             android:gravity="center"
