@@ -116,7 +116,11 @@ void main() {
     await tester.tap(checkboxes.at(1));
     await tester.pump();
 
-    await tester.ensureVisible(find.text('Guardar ruta'));
+    await tester.scrollUntilVisible(
+      find.text('Guardar ruta'),
+      600,
+      scrollable: find.byType(Scrollable).last,
+    );
     await tester.tap(find.text('Guardar ruta'));
     await tester.pumpAndSettle();
 
