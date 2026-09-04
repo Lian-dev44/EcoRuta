@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../app_scope.dart';
 import 'main_screens.dart';
 import 'map_screen.dart';
 
@@ -23,18 +24,56 @@ class _EcoRutaMainShellState extends State<EcoRutaMainShell> {
 
   @override
   Widget build(BuildContext context) {
+    final controller = EcoRutaScope.of(context);
+    final isAdmin = controller.user?.role == 'admin';
+
+    Widget? actionButton;
+    if (_index <= 1) {
+      actionButton = FloatingActionButton.small(
+        heroTag: 'favorites-shortcut',
+        tooltip: 'Mis favoritos',
+        onPressed: () => Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => const FavoritesScreen()),
+        ),
+        child: const Icon(Icons.favorite_outline),
+      );
+    } else if (_index == 4 && isAdmin) {
+      actionButton = FloatingActionButton.extended(
+        heroTag: 'admin-sync-destinations',
+        tooltip: 'Sincronizar catálogo turístico',
+        onPressed: controller.busy
+            ? null
+            : () async {
+                try {
+                  await controller.seedRemoteDestinations();
+                  if (!context.mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        '${controller.destinations.length} destinos sincronizados con Firestore.',
+                      ),
+                    ),
+                  );
+                } catch (_) {
+                  if (!context.mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        controller.lastError ??
+                            'No se pudo sincronizar el catálogo de destinos.',
+                      ),
+                    ),
+                  );
+                }
+              },
+        icon: const Icon(Icons.cloud_sync_outlined),
+        label: const Text('Sincronizar destinos'),
+      );
+    }
+
     return Scaffold(
       body: _pages[_index],
-      floatingActionButton: _index <= 1
-          ? FloatingActionButton.small(
-              heroTag: 'favorites-shortcut',
-              tooltip: 'Mis favoritos',
-              onPressed: () => Navigator.of(context).push(
-                MaterialPageRoute(builder: (_) => const FavoritesScreen()),
-              ),
-              child: const Icon(Icons.favorite_outline),
-            )
-          : null,
+      floatingActionButton: actionButton,
       bottomNavigationBar: NavigationBar(
         selectedIndex: _index,
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
