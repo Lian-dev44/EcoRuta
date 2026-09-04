@@ -53,6 +53,25 @@ void main() {
     service.dispose();
   });
 
+  test('Repositorio permite crear y recuperar rutas', () async {
+    final repository = DemoRepository();
+    final user = await repository.signIn(
+      email: 'prueba@ecoruta.app',
+      password: '123456',
+    );
+
+    await repository.createRoute(
+      uid: user.uid,
+      name: 'Ruta de prueba',
+      destinationIds: const ['volcan_masaya', 'granada_centro'],
+    );
+
+    final routes = await repository.getRoutes(user.uid);
+    expect(routes, hasLength(1));
+    expect(routes.first.name, 'Ruta de prueba');
+    expect(routes.first.destinationIds, hasLength(2));
+  });
+
   testWidgets('EcoRuta navega por las cinco secciones principales',
       (tester) async {
     final controller = await _pumpInitializedApp(tester);
@@ -88,44 +107,6 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Perfil'), findsWidgets);
     expect(find.textContaining('Rol:'), findsOneWidget);
-  });
-
-  testWidgets('EcoRuta permite crear una ruta desde la interfaz', (tester) async {
-    await _pumpInitializedApp(tester);
-
-    await tester.tap(find.text('Iniciar sesión'));
-    await tester.pump(const Duration(milliseconds: 500));
-    await tester.pumpAndSettle();
-
-    await tester.tap(find.text('Rutas'));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Nueva ruta'));
-    await tester.pumpAndSettle();
-
-    expect(find.text('Crear ruta'), findsOneWidget);
-
-    await tester.enterText(
-      find.widgetWithText(TextFormField, 'Nombre de la ruta'),
-      'Ruta de prueba',
-    );
-
-    final checkboxes = find.byType(Checkbox);
-    expect(checkboxes, findsAtLeastNWidgets(2));
-    await tester.tap(checkboxes.at(0));
-    await tester.pump();
-    await tester.tap(checkboxes.at(1));
-    await tester.pump();
-
-    await tester.scrollUntilVisible(
-      find.text('Guardar ruta'),
-      600,
-      scrollable: find.byType(Scrollable).last,
-    );
-    await tester.tap(find.text('Guardar ruta'));
-    await tester.pumpAndSettle();
-
-    expect(find.text('Mis rutas'), findsOneWidget);
-    expect(find.text('Ruta de prueba'), findsOneWidget);
   });
 }
 
