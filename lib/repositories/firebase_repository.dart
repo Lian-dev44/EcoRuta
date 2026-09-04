@@ -42,7 +42,7 @@ class FirebaseRepository implements EcoRutaRepository {
       );
       final user = result.user;
       if (user == null) throw Exception('No se pudo iniciar sesión.');
-      return _loadOrCreateProfile(user);
+      return await _loadOrCreateProfile(user);
     } on FirebaseAuthException catch (e) {
       throw Exception(_authMessage(e));
     }

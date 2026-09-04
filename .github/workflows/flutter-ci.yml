@@ -29,5 +29,15 @@ jobs:
       - name: Analizar código
         run: flutter analyze
 
+      - name: Ejecutar pruebas
+        run: flutter test
+
       - name: Compilar APK de prueba
         run: flutter build apk --debug
+
+      - name: Publicar APK como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: EcoRuta-debug-apk
+          path: build/app/outputs/flutter-apk/app-debug.apk
+          if-no-files-found: error
