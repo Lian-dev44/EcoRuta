@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'app_controller.dart';
 import 'app_scope.dart';
 import 'screens/auth_screens.dart';
-import 'screens/main_screens.dart';
+import 'screens/main_shell.dart';
 
 class EcoRutaApp extends StatelessWidget {
   final AppController controller;
@@ -61,7 +61,7 @@ class _AuthGate extends StatelessWidget {
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 250),
       child: controller.isLoggedIn
-          ? const MainShell(key: ValueKey('main'))
+          ? const EcoRutaMainShell(key: ValueKey('main'))
           : const LoginScreen(key: ValueKey('login')),
     );
   }
