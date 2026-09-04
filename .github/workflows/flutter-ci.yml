@@ -23,6 +23,9 @@ jobs:
       - name: Generar plataforma Android si no existe
         run: flutter create --platforms=android --org com.ecoruta .
 
+      - name: Generar branding EcoRuta
+        run: python3 tool/generate_branding.py
+
       - name: Configurar permisos Android
         run: python3 tool/configure_android.py
 
@@ -41,6 +44,6 @@ jobs:
       - name: Publicar APK como artefacto
         uses: actions/upload-artifact@v4
         with:
-          name: EcoRuta-debug-apk
+          name: EcoRuta-0.4-debug-apk
           path: build/app/outputs/flutter-apk/app-debug.apk
           if-no-files-found: error
