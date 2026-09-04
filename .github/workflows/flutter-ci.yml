@@ -1,0 +1,33 @@
+name: Flutter CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Flutter estable
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Generar plataforma Android si no existe
+        run: flutter create --platforms=android --org com.ecoruta .
+
+      - name: Instalar dependencias
+        run: flutter pub get
+
+      - name: Analizar código
+        run: flutter analyze
+
+      - name: Compilar APK de prueba
+        run: flutter build apk --debug
