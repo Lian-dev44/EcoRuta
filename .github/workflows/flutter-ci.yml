@@ -23,6 +23,9 @@ jobs:
       - name: Generar plataforma Android si no existe
         run: flutter create --platforms=android --org com.ecoruta .
 
+      - name: Configurar permisos Android
+        run: python3 tool/configure_android.py
+
       - name: Instalar dependencias
         run: flutter pub get
 
