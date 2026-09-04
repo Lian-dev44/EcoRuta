@@ -1,9 +1,12 @@
 import 'package:ecoruta/app.dart';
 import 'package:ecoruta/app_controller.dart';
+import 'package:ecoruta/data/sample_data.dart';
 import 'package:ecoruta/models/destination.dart';
 import 'package:ecoruta/repositories/demo_repository.dart';
+import 'package:ecoruta/services/routing_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:latlong2/latlong.dart';
 
 void main() {
   test('Destination conserva los datos principales', () {
@@ -25,7 +28,33 @@ void main() {
     expect(map['activo'], isTrue);
   });
 
-  testWidgets('EcoRuta navega por cinco secciones funcionales', (tester) async {
+  test('EcoRuta dispone de un catálogo ampliado de Nicaragua', () {
+    expect(sampleDestinations.length, greaterThanOrEqualTo(25));
+    expect(
+      sampleDestinations.map((destination) => destination.department).toSet().length,
+      greaterThanOrEqualTo(10),
+    );
+  });
+
+  test('Motor de sugerencias prioriza destinos próximos y variados', () {
+    final service = RoutingService();
+    final suggestions = service.selectSuggestedDestinations(
+      origin: const LatLng(12.13, -86.27),
+      destinations: sampleDestinations,
+      stopCount: 4,
+    );
+
+    expect(suggestions.length, 4);
+    expect(suggestions.map((item) => item.id).toSet().length, 4);
+    expect(
+      suggestions.map((item) => item.category).toSet().length,
+      greaterThanOrEqualTo(2),
+    );
+    service.dispose();
+  });
+
+  testWidgets('EcoRuta navega por las cinco secciones principales',
+      (tester) async {
     final controller = await _pumpInitializedApp(tester);
 
     expect(controller.initializing, isFalse);
@@ -44,9 +73,11 @@ void main() {
     expect(find.text('Explorar destinos'), findsOneWidget);
     expect(find.byType(TextField), findsOneWidget);
 
-    await tester.tap(find.text('Favoritos'));
-    await tester.pumpAndSettle();
-    expect(find.text('Mis favoritos'), findsOneWidget);
+    await tester.tap(find.text('Mapa'));
+    await tester.pump(const Duration(milliseconds: 700));
+    expect(find.text('Mapa inteligente'), findsOneWidget);
+    expect(find.text('Sugerir ruta'), findsOneWidget);
+    expect(find.text('¿A dónde quieres ir?'), findsOneWidget);
 
     await tester.tap(find.text('Rutas'));
     await tester.pumpAndSettle();
