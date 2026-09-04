@@ -17,14 +17,14 @@ class LocationAccessException implements Exception {
 
 class LocationService {
   static const LocationSettings _currentSettings = LocationSettings(
-    accuracy: LocationAccuracy.high,
+    accuracy: LocationAccuracy.bestForNavigation,
     distanceFilter: 0,
     timeLimit: Duration(seconds: 15),
   );
 
   static const LocationSettings _streamSettings = LocationSettings(
     accuracy: LocationAccuracy.bestForNavigation,
-    distanceFilter: 20,
+    distanceFilter: 5,
   );
 
   Future<Position> requestCurrentPosition() async {
