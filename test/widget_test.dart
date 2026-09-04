@@ -1,6 +1,7 @@
 import 'package:ecoruta/app.dart';
 import 'package:ecoruta/app_controller.dart';
 import 'package:ecoruta/models/destination.dart';
+import 'package:ecoruta/repositories/demo_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -97,7 +98,7 @@ Future<AppController> _pumpInitializedApp(WidgetTester tester) async {
   await tester.binding.setSurfaceSize(const Size(430, 900));
   addTearDown(() => tester.binding.setSurfaceSize(null));
 
-  final controller = AppController();
+  final controller = AppController(repositoryOverride: DemoRepository());
   await tester.pumpWidget(EcoRutaApp(controller: controller));
 
   final initialization = controller.initialize();
