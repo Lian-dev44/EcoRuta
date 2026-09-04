@@ -84,6 +84,7 @@ void main() {
     await tester.tap(checkboxes.at(1));
     await tester.pump();
 
+    await tester.ensureVisible(find.text('Guardar ruta'));
     await tester.tap(find.text('Guardar ruta'));
     await tester.pumpAndSettle();
 
@@ -93,8 +94,10 @@ void main() {
 }
 
 Future<AppController> _pumpInitializedApp(WidgetTester tester) async {
-  final controller = AppController();
+  await tester.binding.setSurfaceSize(const Size(430, 900));
+  addTearDown(() => tester.binding.setSurfaceSize(null));
 
+  final controller = AppController();
   await tester.pumpWidget(EcoRutaApp(controller: controller));
 
   final initialization = controller.initialize();
