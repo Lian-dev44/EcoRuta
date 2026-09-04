@@ -114,8 +114,6 @@ class FirebaseRepository implements EcoRutaRepository {
     if (snapshot.docs.isEmpty) {
       final currentUser = _auth.currentUser;
 
-      // Si el usuario autenticado es administrador, dejamos la lista vacía
-      // para que Perfil muestre el botón de carga inicial de destinos.
       if (currentUser != null) {
         final profile = await _db.collection('usuarios').doc(currentUser.uid).get();
         final role = profile.data()?['rol'] as String?;
@@ -124,8 +122,6 @@ class FirebaseRepository implements EcoRutaRepository {
         }
       }
 
-      // Para usuarios normales, la app sigue siendo navegable mientras
-      // Firestore todavía no tiene cargado el catálogo inicial.
       return List<Destination>.from(sampleDestinations);
     }
 
@@ -211,9 +207,6 @@ class FirebaseRepository implements EcoRutaRepository {
 
   @override
   Future<void> seedDestinations() async {
-    final current = await _db.collection('destinos').limit(1).get();
-    if (current.docs.isNotEmpty) return;
-
     final batch = _db.batch();
     for (final destination in sampleDestinations) {
       batch.set(
@@ -221,7 +214,9 @@ class FirebaseRepository implements EcoRutaRepository {
         {
           ...destination.toMap(),
           'fechaCreacion': FieldValue.serverTimestamp(),
+          'ultimaSincronizacion': FieldValue.serverTimestamp(),
         },
+        SetOptions(merge: true),
       );
     }
     await batch.commit();
