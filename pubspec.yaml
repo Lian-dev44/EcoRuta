@@ -1,7 +1,7 @@
 name: ecoruta
 description: Aplicación móvil EcoRuta para descubrir destinos turísticos de Nicaragua.
 publish_to: 'none'
-version: 0.1.0+1
+version: 0.2.0+2
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -10,6 +10,9 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
+  firebase_core: ^3.6.0
+  firebase_auth: ^5.3.1
+  cloud_firestore: ^5.4.4
 
 dev_dependencies:
   flutter_test:
