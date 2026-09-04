@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 
+import 'data/sample_data.dart';
 import 'models/app_user.dart';
 import 'models/destination.dart';
 import 'models/tour_route.dart';
@@ -53,7 +54,12 @@ class AppController extends ChangeNotifier {
       if (user != null) {
         await _loadUserData();
       } else {
-        destinations = await repository.getDestinations();
+        // Las reglas de producción permiten leer destinos solo a usuarios
+        // autenticados. Mientras estamos en la pantalla de acceso usamos el
+        // catálogo local para no realizar una lectura no autorizada.
+        destinations = repository.isRemote
+            ? List<Destination>.from(sampleDestinations)
+            : await repository.getDestinations();
       }
     } catch (error) {
       startupWarning = 'No se pudieron cargar los datos iniciales: $error';
@@ -91,7 +97,9 @@ class AppController extends ChangeNotifier {
       user = null;
       favoriteIds = {};
       routes = [];
-      destinations = await repository.getDestinations();
+      destinations = repository.isRemote
+          ? List<Destination>.from(sampleDestinations)
+          : await repository.getDestinations();
     });
   }
 
