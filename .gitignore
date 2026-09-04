@@ -18,6 +18,7 @@ android/local.properties
 # Firebase and secrets
 android/app/google-services.json
 ios/Runner/GoogleService-Info.plist
+firebase.env.json
 .env
 *.jks
 *.keystore
