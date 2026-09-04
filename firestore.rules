@@ -1,0 +1,81 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function currentUserDoc() {
+      return get(/databases/$(database)/documents/usuarios/$(request.auth.uid));
+    }
+
+    function hasRole(role) {
+      return signedIn() && currentUserDoc().data.rol == role;
+    }
+
+    function isAdmin() {
+      return hasRole('admin');
+    }
+
+    function isAuditor() {
+      return hasRole('auditor');
+    }
+
+    match /usuarios/{uid} {
+      allow read: if signedIn() && (request.auth.uid == uid || isAdmin() || isAuditor());
+
+      allow create: if signedIn()
+        && request.auth.uid == uid
+        && request.resource.data.rol == 'usuario';
+
+      allow update: if signedIn()
+        && request.auth.uid == uid
+        && request.resource.data.rol == resource.data.rol;
+
+      allow delete: if isAdmin();
+    }
+
+    match /destinos/{destinoId} {
+      allow read: if signedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /categorias/{categoriaId} {
+      allow read: if signedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /favoritos/{favoritoId} {
+      allow read: if signedIn() && resource.data.usuarioId == request.auth.uid;
+
+      allow create: if signedIn()
+        && request.resource.data.usuarioId == request.auth.uid;
+
+      allow update: if signedIn()
+        && resource.data.usuarioId == request.auth.uid
+        && request.resource.data.usuarioId == request.auth.uid;
+
+      allow delete: if signedIn()
+        && resource.data.usuarioId == request.auth.uid;
+    }
+
+    match /rutas/{rutaId} {
+      allow read: if signedIn() && resource.data.usuarioId == request.auth.uid;
+
+      allow create: if signedIn()
+        && request.resource.data.usuarioId == request.auth.uid;
+
+      allow update, delete: if signedIn()
+        && resource.data.usuarioId == request.auth.uid
+        && request.resource.data.usuarioId == request.auth.uid;
+    }
+
+    match /auditoria/{registroId} {
+      allow read: if isAdmin() || isAuditor();
+      allow create: if signedIn();
+      allow update, delete: if false;
+    }
+  }
+}
