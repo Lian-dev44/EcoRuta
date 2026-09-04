@@ -378,7 +378,7 @@ git push
 
 ## Equipo
 
-Proyecto desarrollado como trabajo colaborativo por un equipo de cuatro integrantes.
+Proyecto desarrollado como trabajo colaborativo por un equipo de cinco integrantes.
 
 ## Licencia
 
