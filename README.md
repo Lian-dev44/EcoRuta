@@ -1,102 +1,111 @@
 # EcoRuta
 
-## Descripción del proyecto
+Aplicación móvil desarrollada en **Flutter** para explorar destinos turísticos de Nicaragua, guardar favoritos y crear rutas personalizadas.
 
-**EcoRuta** es una aplicación móvil orientada al turismo sostenible en Nicaragua. Su propósito es facilitar a los usuarios el descubrimiento de destinos turísticos, la consulta de información relevante de cada lugar, la exploración mediante mapas, la gestión de favoritos y la creación de rutas turísticas.
+> Proyecto preparado para la fase de preclasificación del Hackathon Nicaragua 2026, categoría **Aficionado**.
 
-El proyecto está diseñado para centralizar información de destinos populares de Nicaragua en una experiencia móvil sencilla, accesible y organizada.
+## Descripción general
+
+**EcoRuta** centraliza información de destinos turísticos de Nicaragua dentro de una experiencia móvil sencilla y organizada. El usuario puede registrarse, iniciar sesión, explorar lugares, buscar y filtrar destinos, consultar información detallada, guardar favoritos y crear recorridos con varios destinos.
+
+El proyecto utiliza una arquitectura preparada para trabajar con **Firebase Authentication** y **Cloud Firestore**. Mientras Firebase no esté configurado, la aplicación activa automáticamente un modo de demostración local para permitir el desarrollo y las pruebas de interfaz.
 
 ## Problema que busca resolver
 
-Muchas personas que desean conocer destinos turísticos de Nicaragua encuentran la información distribuida en diferentes sitios, redes sociales y mapas. Esto dificulta comparar lugares, organizar recorridos y guardar sitios de interés.
-
-EcoRuta busca reunir estas funciones dentro de una sola aplicación móvil.
+La información turística suele encontrarse distribuida entre redes sociales, mapas y diferentes sitios web. EcoRuta busca reunir en una sola aplicación la exploración de destinos, el guardado de lugares de interés y la organización de rutas.
 
 ## Objetivo general
 
-Desarrollar una aplicación móvil que permita consultar, explorar y organizar destinos turísticos de Nicaragua mediante una interfaz amigable, información estructurada, mapas y rutas personalizadas.
+Desarrollar una aplicación móvil funcional que permita descubrir, consultar y organizar destinos turísticos de Nicaragua mediante una interfaz clara, navegación fluida y persistencia de datos en la nube.
 
-## Objetivos específicos
+## Funcionalidades implementadas
 
-- Mostrar destinos turísticos de Nicaragua de manera organizada.
-- Permitir la búsqueda y filtrado de destinos.
-- Mostrar información detallada de cada lugar.
-- Integrar mapas y ubicación geográfica.
-- Permitir guardar destinos como favoritos.
-- Permitir crear y consultar rutas turísticas.
-- Gestionar usuarios mediante autenticación.
-- Implementar distintos roles y permisos dentro de la aplicación.
-- Utilizar una base de datos NoSQL en la nube para almacenar la información.
+### Autenticación
 
-## Funcionalidades principales
+- Pantalla de inicio de sesión.
+- Pantalla de registro.
+- Validación de formularios.
+- Integración en código con Firebase Authentication.
+- Restauración de sesión cuando Firebase está activo.
 
-### Usuario
+### Inicio
 
-- Registro e inicio de sesión.
-- Consulta de destinos turísticos.
-- Búsqueda y exploración por categorías.
-- Visualización de información detallada de cada destino.
-- Consulta de ubicación en mapa.
-- Gestión de destinos favoritos.
-- Creación y consulta de rutas turísticas.
-- Gestión básica de perfil.
+- Bienvenida personalizada.
+- Indicador del estado del backend.
+- Destinos destacados.
+- Acceso al detalle de cada destino.
 
-### Administrador
+### Explorar
 
-- Acceso a funciones administrativas.
-- Gestión de destinos turísticos.
-- Gestión de categorías.
-- Actualización del contenido disponible en la aplicación.
-- Consulta de información relevante para la administración.
+- Búsqueda por nombre, municipio o departamento.
+- Filtros por categoría.
+- Listado de destinos.
+- Acceso al detalle.
 
-### Auditor
+### Detalle del destino
 
-- Consulta de registros de actividad.
-- Revisión de cambios realizados dentro del sistema.
-- Acceso de solo lectura a información de auditoría.
-- Sin permisos para modificar información administrativa.
+- Nombre.
+- Descripción.
+- Categoría.
+- Departamento y municipio.
+- Coordenadas geográficas.
+- Acción para guardar o quitar de favoritos.
 
-## Roles del sistema
+### Favoritos
 
-EcoRuta contempla tres roles principales:
+- Lista dinámica de destinos guardados.
+- Persistencia en la colección `favoritos` cuando Firebase está conectado.
 
-| Rol | Permisos principales |
-|---|---|
-| Usuario | Explorar destinos, administrar favoritos, consultar mapas y crear rutas |
-| Administrador | Gestionar destinos, categorías y contenido |
-| Auditor | Consultar registros y cambios sin modificar información |
+### Rutas
+
+- Listado de rutas creadas.
+- Formulario para crear una nueva ruta.
+- Selección de dos o más destinos.
+- Persistencia en la colección `rutas` cuando Firebase está conectado.
+
+### Perfil
+
+- Nombre y correo del usuario.
+- Rol asignado.
+- Estado del backend.
+- Contadores de destinos, favoritos y rutas.
+- Cierre de sesión.
+
+## Pantallas funcionales
+
+EcoRuta supera el mínimo de cinco pantallas solicitado para el entregable de interfaz:
+
+1. Inicio de sesión.
+2. Registro.
+3. Inicio.
+4. Explorar.
+5. Detalle del destino.
+6. Favoritos.
+7. Rutas.
+8. Crear ruta.
+9. Perfil.
+
+La navegación principal utiliza:
+
+```text
+Inicio | Explorar | Favoritos | Rutas | Perfil
+```
 
 ## Tecnologías utilizadas
 
-### Aplicación móvil
-
 - **Flutter**
 - **Dart**
-
-### Backend y servicios en la nube
-
-- **Firebase Authentication** para autenticación de usuarios.
-- **Cloud Firestore** como base de datos NoSQL.
-- **Firebase Storage** para el almacenamiento de imágenes y recursos.
-- **Firebase** como plataforma principal de servicios backend.
-
-### Mapas y ubicación
-
-- Integración de mapas compatible con Flutter.
-- Servicios de geolocalización del dispositivo.
-
-### Control de versiones
-
+- **Firebase Authentication**
+- **Cloud Firestore**
 - **Git**
 - **GitHub**
+- **GitHub Actions** para análisis, pruebas y compilación automática del APK
 
 ## Base de datos
 
 EcoRuta utiliza **Cloud Firestore**, una base de datos NoSQL basada en documentos y colecciones.
 
-La elección de Firestore permite una integración directa con Flutter y Firebase, facilita el almacenamiento flexible de información turística y permite trabajar con autenticación, datos e imágenes dentro del mismo ecosistema tecnológico.
-
-### Colecciones principales
+Colecciones diseñadas:
 
 ```text
 usuarios/
@@ -107,208 +116,99 @@ rutas/
 auditoria/
 ```
 
-### Descripción de las colecciones
-
-#### usuarios
-
-Contiene la información básica de los usuarios registrados.
-
-Ejemplo de campos:
+Colecciones utilizadas actualmente por la interfaz:
 
 ```text
-uid
-nombre
-correo
-rol
-fechaRegistro
-activo
+usuarios/
+destinos/
+favoritos/
+rutas/
 ```
 
-#### destinos
-
-Contiene la información de los lugares turísticos disponibles en EcoRuta.
-
-Ejemplo de campos:
+El diseño completo de la base de datos se encuentra en:
 
 ```text
-idDestino
-nombre
-descripcion
-departamento
-categoriaId
-latitud
-longitud
-imagenUrl
-activo
+docs/base-de-datos.md
 ```
 
-#### categorias
-
-Permite organizar los destinos por tipo.
-
-Ejemplo:
+## Arquitectura
 
 ```text
-Naturaleza
-Playas
-Cultura
-Aventura
-Historia
+                 +----------------------+
+                 |   Aplicación Flutter |
+                 |       EcoRuta        |
+                 +----------+-----------+
+                            |
+            +---------------+---------------+
+            |                               |
+            v                               v
++------------------------+       +-----------------------+
+| Firebase Authentication|       |   Cloud Firestore     |
++------------------------+       +-----------------------+
+            |                         |   |   |   |
+            |                         |   |   |   +--> rutas
+            |                         |   |   +------> favoritos
+            |                         |   +----------> destinos
+            |                         +--------------> usuarios
+            |
+            +---- sesión del usuario
 ```
 
-#### favoritos
+Si Firebase no está configurado, la capa de repositorio cambia automáticamente a un backend local de demostración.
 
-Relaciona a un usuario con los destinos que ha guardado como favoritos.
-
-Ejemplo de campos:
-
-```text
-usuarioId
-destinoId
-fechaAgregado
-```
-
-#### rutas
-
-Almacena las rutas creadas por los usuarios.
-
-Ejemplo de campos:
-
-```text
-idRuta
-usuarioId
-nombre
-destinos
-fechaCreacion
-```
-
-#### auditoria
-
-Registra acciones importantes ejecutadas dentro del sistema.
-
-Ejemplo de campos:
-
-```text
-usuarioId
-accion
-entidad
-fecha
-detalle
-```
-
-## Arquitectura general
-
-EcoRuta utiliza una arquitectura móvil conectada a servicios Firebase.
-
-```text
-Usuario
-   |
-   v
-Aplicación EcoRuta - Flutter
-   |
-   +-----------------------------+
-   |                             |
-   v                             v
-Firebase Authentication     Cloud Firestore
-   |                             |
-   |                             +--> usuarios
-   |                             +--> destinos
-   |                             +--> categorias
-   |                             +--> favoritos
-   |                             +--> rutas
-   |                             +--> auditoria
-   |
-   +---------------------------> Firebase Storage
-                                  |
-                                  +--> imágenes
-```
-
-## Flujo principal de navegación
-
-```text
-Inicio de la aplicación
-        |
-        v
-Registro / Inicio de sesión
-        |
-        v
-Pantalla principal
-        |
-        +--> Explorar destinos
-        |
-        +--> Buscar
-        |
-        +--> Categorías
-        |
-        +--> Mapa
-        |
-        +--> Favoritos
-        |
-        +--> Rutas
-        |
-        +--> Perfil
-```
-
-## Estructura general del proyecto
-
-La estructura exacta puede variar durante el desarrollo, pero se mantiene una organización modular similar a la siguiente:
+## Estructura del código
 
 ```text
 lib/
-|
-+-- main.dart
-|
-+-- models/
-|   +-- usuario.dart
-|   +-- destino.dart
-|   +-- categoria.dart
-|   +-- ruta.dart
-|
-+-- screens/
-|   +-- auth/
-|   +-- home/
-|   +-- destinos/
-|   +-- mapa/
-|   +-- rutas/
-|   +-- perfil/
-|   +-- admin/
-|   +-- auditor/
-|
-+-- services/
-|   +-- auth_service.dart
-|   +-- firestore_service.dart
-|   +-- storage_service.dart
-|   +-- location_service.dart
-|
-+-- widgets/
-|
-+-- utils/
+├── main.dart
+├── app.dart
+├── app_controller.dart
+├── app_scope.dart
+├── data/
+│   └── sample_data.dart
+├── models/
+│   ├── app_user.dart
+│   ├── destination.dart
+│   └── tour_route.dart
+├── repositories/
+│   ├── ecoruta_repository.dart
+│   ├── demo_repository.dart
+│   └── firebase_repository.dart
+├── screens/
+│   ├── auth_screens.dart
+│   └── main_screens.dart
+├── services/
+│   └── firebase_config.dart
+└── widgets/
+    └── ecoruta_widgets.dart
 ```
 
-## Requisitos para ejecutar el proyecto
+## Requisitos
 
-Antes de ejecutar EcoRuta se recomienda contar con:
+Para ejecutar el proyecto localmente se necesita:
 
-- Flutter SDK instalado.
+- Flutter SDK estable.
 - Dart SDK incluido con Flutter.
 - Android Studio o Visual Studio Code.
-- Android SDK configurado.
-- Un emulador Android o dispositivo físico.
-- Proyecto Firebase configurado.
-- Conexión a Internet para utilizar los servicios en la nube.
+- Android SDK.
+- Emulador Android o dispositivo físico.
+- Conexión a Internet para utilizar Firebase.
 
-## Instalación
+## Instalación básica
 
 ### 1. Clonar el repositorio
 
 ```bash
 git clone https://github.com/Lian-dev44/EcoRuta.git
+cd EcoRuta
 ```
 
-### 2. Entrar a la carpeta del proyecto
+### 2. Generar la plataforma Android
+
+El repositorio mantiene el código fuente principal y GitHub Actions genera la plataforma Android durante la validación. Para trabajar localmente por primera vez:
 
 ```bash
-cd EcoRuta
+flutter create --platforms=android --org com.ecoruta .
 ```
 
 ### 3. Instalar dependencias
@@ -317,93 +217,168 @@ cd EcoRuta
 flutter pub get
 ```
 
-### 4. Configurar Firebase
-
-El proyecto debe contar con la configuración de Firebase correspondiente para Android.
-
-Los archivos y parámetros de configuración deben asociarse al proyecto Firebase utilizado por EcoRuta.
-
-### 5. Verificar el entorno
+### 4. Verificar el entorno
 
 ```bash
 flutter doctor
 ```
 
-### 6. Ejecutar la aplicación
+## Ejecutar sin Firebase
+
+Para probar interfaz, navegación y funcionalidades locales:
 
 ```bash
 flutter run
 ```
 
-## Generación del APK
+La aplicación mostrará:
 
-Para generar una versión APK de EcoRuta:
-
-```bash
-flutter build apk
+```text
+Modo demostración local
 ```
 
-El archivo generado normalmente se encontrará en:
+## Ejecutar con Firebase
+
+La configuración completa se encuentra en:
+
+```text
+docs/firebase-configuracion.md
+```
+
+Ejemplo en PowerShell:
+
+```powershell
+flutter run --dart-define=FIREBASE_API_KEY="TU_API_KEY" --dart-define=FIREBASE_APP_ID="TU_APP_ID" --dart-define=FIREBASE_MESSAGING_SENDER_ID="TU_SENDER_ID" --dart-define=FIREBASE_PROJECT_ID="TU_PROJECT_ID" --dart-define=FIREBASE_STORAGE_BUCKET="TU_BUCKET"
+```
+
+Cuando la conexión se inicializa correctamente, EcoRuta muestra:
+
+```text
+Firebase conectado
+```
+
+## Generar APK
+
+### APK de prueba
+
+```bash
+flutter build apk --debug
+```
+
+### APK release
+
+```bash
+flutter build apk --release
+```
+
+Ruta habitual del APK release:
 
 ```text
 build/app/outputs/flutter-apk/app-release.apk
 ```
 
-## Buenas prácticas y seguridad
+## Validación automática
 
-EcoRuta contempla las siguientes medidas:
+Cada cambio enviado a `main` activa GitHub Actions. El flujo ejecuta:
 
-- Autenticación mediante Firebase Authentication.
-- Validación de datos antes de guardar información.
-- Separación de permisos según roles.
-- Restricción de funciones administrativas.
-- Registro de acciones relevantes en auditoría.
-- Manejo de errores durante operaciones con Firebase.
-- Organización modular del código.
-- Nombres descriptivos para clases, variables y métodos.
-- Uso de Git y GitHub para control de versiones.
+```text
+flutter pub get
+flutter analyze
+flutter test
+flutter build apk --debug
+```
+
+Si todas las etapas terminan correctamente, GitHub publica un artefacto llamado:
+
+```text
+EcoRuta-debug-apk
+```
+
+Esto permite demostrar que el código se analiza, se prueba y se compila correctamente.
+
+## Pruebas implementadas
+
+El proyecto incluye pruebas automáticas para:
+
+- Conversión del modelo `Destination`.
+- Navegación por las cinco secciones principales.
+- Creación de rutas desde la interfaz.
+
+Ejecutar localmente:
+
+```bash
+flutter test
+```
+
+## Seguridad
+
+El repositorio incluye `firestore.rules` con una base de permisos para:
+
+- Usuarios autenticados.
+- Favoritos propiedad del usuario.
+- Rutas propiedad del usuario.
+- Destinos y categorías administrados por rol.
+- Acceso de auditoría restringido.
+
+También se excluyen del repositorio archivos locales y credenciales mediante `.gitignore`.
+
+## Roles previstos por la rúbrica
+
+EcoRuta contempla los siguientes roles:
+
+| Rol | Alcance |
+|---|---|
+| Usuario | Explorar destinos, gestionar favoritos y crear rutas |
+| Administrador | Gestionar destinos, categorías y contenido |
+| Auditor | Consultar registros y cambios sin modificar información |
+
+La interfaz específica de Administrador y Auditor corresponde al entregable de seguridad y roles y se desarrolla como módulo independiente del flujo principal de usuario.
+
+## Funcionalidades planificadas posteriores
+
+Las siguientes funciones forman parte de la evolución del proyecto, pero no se presentan como terminadas en el estado actual:
+
+- Visualización cartográfica interactiva.
+- Navegación GPS.
+- Imágenes almacenadas en Firebase Storage.
+- Panel completo de administración.
+- Panel completo de auditoría.
+
+## Documentación adicional
+
+```text
+docs/base-de-datos.md
+docs/interfaz-y-desarrollo.md
+docs/estado-entregable-3.md
+docs/firebase-configuracion.md
+```
 
 ## Control de versiones
 
-El proyecto utiliza Git como sistema de control de versiones y GitHub como repositorio remoto.
+El proyecto utiliza Git y GitHub. Entre los cambios registrados se incluyen documentación, implementación de la interfaz, integración con Firebase, pruebas automáticas y correcciones detectadas por integración continua.
 
-Comandos principales utilizados:
+Comandos básicos:
 
 ```bash
 git add .
 git commit -m "descripcion del cambio"
-git push
 git pull
+git push
 ```
-
-Ejemplos de commits esperados:
-
-```text
-Initial commit: estructura base de EcoRuta
-feat: agregar autenticacion de usuarios
-feat: implementar pantalla principal
-feat: agregar listado de destinos
-feat: integrar mapa y ubicacion
-feat: implementar favoritos
-feat: agregar gestion de rutas
-feat: implementar roles y permisos
-docs: agregar documentacion tecnica
-fix: corregir validaciones y navegacion
-```
-
-## Ejecución de la solución
-
-EcoRuta está diseñada para ejecutarse de forma local durante el desarrollo mediante Flutter y para instalarse en dispositivos Android utilizando un archivo APK.
-
-La demostración final debe incluir un recorrido por las principales pantallas y funcionalidades de la aplicación.
 
 ## Estado del proyecto
 
-Proyecto en desarrollo para la fase de preclasificación del **Hackathon Nicaragua 2026**, categoría **Aficionado**.
+- README técnico: completado.
+- Diseño NoSQL y diagrama de clases: completado.
+- Interfaz con más de cinco pantallas: implementada.
+- Navegación y formularios: implementados.
+- Integración en código con Firebase: implementada.
+- Compilación automática de APK: validada.
+- Validación final contra un proyecto Firebase real: pendiente de configurar las credenciales del proyecto.
 
 ## Equipo
 
-Proyecto desarrollado como trabajo colaborativo de un equipo de cuatro integrantes.
+Proyecto desarrollado como trabajo colaborativo por un equipo de cuatro integrantes.
 
 ## Licencia
 
