@@ -10,6 +10,10 @@ import 'repositories/firebase_repository.dart';
 import 'services/firebase_config.dart';
 
 class AppController extends ChangeNotifier {
+  final EcoRutaRepository? repositoryOverride;
+
+  AppController({this.repositoryOverride});
+
   late EcoRutaRepository repository;
 
   AppUser? user;
@@ -28,7 +32,9 @@ class AppController extends ChangeNotifier {
 
   Future<void> initialize() async {
     try {
-      if (EcoRutaFirebaseConfig.isConfigured) {
+      if (repositoryOverride != null) {
+        repository = repositoryOverride!;
+      } else if (EcoRutaFirebaseConfig.isConfigured) {
         await Firebase.initializeApp(options: EcoRutaFirebaseConfig.options);
         repository = FirebaseRepository();
       } else {
