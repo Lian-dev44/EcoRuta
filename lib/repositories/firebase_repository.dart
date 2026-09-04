@@ -111,11 +111,21 @@ class FirebaseRepository implements EcoRutaRepository {
   Future<List<Destination>> getDestinations() async {
     final snapshot = await _db.collection('destinos').get();
 
-    // Durante la primera configuración del proyecto Firestore puede estar
-    // vacío. En ese caso la interfaz sigue siendo completamente navegable con
-    // el catálogo local de demostración, mientras autenticación, favoritos y
-    // rutas continúan usando el backend real.
     if (snapshot.docs.isEmpty) {
+      final currentUser = _auth.currentUser;
+
+      // Si el usuario autenticado es administrador, dejamos la lista vacía
+      // para que Perfil muestre el botón de carga inicial de destinos.
+      if (currentUser != null) {
+        final profile = await _db.collection('usuarios').doc(currentUser.uid).get();
+        final role = profile.data()?['rol'] as String?;
+        if (role == 'admin') {
+          return <Destination>[];
+        }
+      }
+
+      // Para usuarios normales, la app sigue siendo navegable mientras
+      // Firestore todavía no tiene cargado el catálogo inicial.
       return List<Destination>.from(sampleDestinations);
     }
 
