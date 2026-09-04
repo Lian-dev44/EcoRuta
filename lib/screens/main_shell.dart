@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../app_scope.dart';
 import 'main_screens.dart';
 import 'map_screen.dart';
+import 'routes_navigation_screen.dart';
 
 class EcoRutaMainShell extends StatefulWidget {
   const EcoRutaMainShell({super.key});
@@ -18,7 +19,7 @@ class _EcoRutaMainShellState extends State<EcoRutaMainShell> {
     HomeScreen(),
     ExploreScreen(),
     MapScreen(),
-    RoutesScreen(),
+    SmartRoutesScreen(),
     ProfileScreen(),
   ];
 
