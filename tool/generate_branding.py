@@ -192,14 +192,23 @@ def patch_home_screen() -> None:
         raise SystemExit('No se encontró el título del HomeScreen.')
     text = text.replace(title_old, title_new, 1)
 
-    row_old = '              child: const Row(\n'
-    row_new = '              child: Row(\n'
+    row_old = '''              child: const Row(
+                children: [
+                  Expanded(
+'''
+    row_new = '''              child: Row(
+                children: [
+                  const Expanded(
+'''
     if row_old not in text:
         raise SystemExit('No se encontró el banner principal del HomeScreen.')
     text = text.replace(row_old, row_new, 1)
 
-    icon_old = '                  Icon(Icons.eco, color: Colors.white, size: 56),\n'
-    icon_new = '''                  Container(
+    icon_old = '''                  SizedBox(width: 12),
+                  Icon(Icons.eco, color: Colors.white, size: 56),
+'''
+    icon_new = '''                  const SizedBox(width: 12),
+                  Container(
                     width: 72,
                     height: 72,
                     padding: const EdgeInsets.all(5),
