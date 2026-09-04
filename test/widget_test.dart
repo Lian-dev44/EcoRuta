@@ -25,16 +25,14 @@ void main() {
   });
 
   testWidgets('EcoRuta navega por cinco secciones funcionales', (tester) async {
-    final controller = AppController();
-    await controller.initialize();
+    final controller = await _pumpInitializedApp(tester);
 
-    await tester.pumpWidget(EcoRutaApp(controller: controller));
-    await tester.pumpAndSettle();
-
+    expect(controller.initializing, isFalse);
     expect(find.text('Descubre Nicaragua\ncon EcoRuta'), findsOneWidget);
     expect(find.text('Iniciar sesión'), findsOneWidget);
 
     await tester.tap(find.text('Iniciar sesión'));
+    await tester.pump(const Duration(milliseconds: 500));
     await tester.pumpAndSettle();
 
     expect(find.textContaining('Hola,'), findsOneWidget);
@@ -61,13 +59,10 @@ void main() {
   });
 
   testWidgets('EcoRuta permite crear una ruta desde la interfaz', (tester) async {
-    final controller = AppController();
-    await controller.initialize();
-
-    await tester.pumpWidget(EcoRutaApp(controller: controller));
-    await tester.pumpAndSettle();
+    await _pumpInitializedApp(tester);
 
     await tester.tap(find.text('Iniciar sesión'));
+    await tester.pump(const Duration(milliseconds: 500));
     await tester.pumpAndSettle();
 
     await tester.tap(find.text('Rutas'));
@@ -95,4 +90,17 @@ void main() {
     expect(find.text('Mis rutas'), findsOneWidget);
     expect(find.text('Ruta de prueba'), findsOneWidget);
   });
+}
+
+Future<AppController> _pumpInitializedApp(WidgetTester tester) async {
+  final controller = AppController();
+
+  await tester.pumpWidget(EcoRutaApp(controller: controller));
+
+  final initialization = controller.initialize();
+  await tester.pump(const Duration(milliseconds: 500));
+  await initialization;
+  await tester.pumpAndSettle();
+
+  return controller;
 }
