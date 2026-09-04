@@ -47,7 +47,7 @@ class RoutingException implements Exception {
 class RoutingService {
   static const _host = 'router.project-osrm.org';
   static const _headers = <String, String>{
-    'User-Agent': 'EcoRuta/0.3 (Hackathon Nicaragua 2026)',
+    'User-Agent': 'EcoRuta/0.4 (Hackathon Nicaragua 2026)',
     'Accept': 'application/json',
   };
 
@@ -59,10 +59,27 @@ class RoutingService {
   Future<RoutePlan> routeTo({
     required LatLng origin,
     required Destination destination,
+  }) {
+    return routeThroughStops(
+      origin: origin,
+      stops: [destination],
+    );
+  }
+
+  Future<RoutePlan> routeThroughStops({
+    required LatLng origin,
+    required List<Destination> stops,
   }) async {
-    final coordinates = [
+    if (stops.isEmpty) {
+      throw const RoutingException('La ruta no contiene destinos disponibles.');
+    }
+
+    final coordinates = <String>[
       _coordinate(origin),
-      '${destination.longitude.toStringAsFixed(6)},${destination.latitude.toStringAsFixed(6)}',
+      ...stops.map(
+        (destination) =>
+            '${destination.longitude.toStringAsFixed(6)},${destination.latitude.toStringAsFixed(6)}',
+      ),
     ].join(';');
 
     final uri = Uri.https(
@@ -79,14 +96,14 @@ class RoutingService {
     final routes = data['routes'] as List<dynamic>?;
     if (routes == null || routes.isEmpty) {
       throw const RoutingException(
-        'No se encontró una ruta vehicular para ese destino.',
+        'No se encontró una ruta vehicular para los destinos seleccionados.',
       );
     }
 
     final route = Map<String, dynamic>.from(routes.first as Map);
     return RoutePlan(
       points: _geometry(route),
-      stops: [destination],
+      stops: List<Destination>.from(stops),
       distanceMeters: _number(route['distance']),
       durationSeconds: _number(route['duration']),
       suggested: false,
@@ -171,8 +188,6 @@ class RoutingService {
         return distanceA.compareTo(distanceB);
       });
 
-    // Se consideran primero los destinos cercanos para que la sugerencia sea
-    // razonable y luego se prioriza variedad de categorías.
     final pool = ranked.take(ranked.length > 14 ? 14 : ranked.length).toList();
     final result = <Destination>[];
     final usedCategories = <String>{};
