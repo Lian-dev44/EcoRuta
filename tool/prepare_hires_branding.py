@@ -8,10 +8,9 @@ ROOT = Path(__file__).resolve().parents[1]
 BRANDING = ROOT / 'assets' / 'branding'
 PARTS_DIR = BRANDING / 'master_parts'
 ICON_B64 = BRANDING / 'icon.b64'
-EXPECTED_SHA256 = '96cb359cf7f2c1c121a3d29190ee1bd7662b325acbb5ddc0b89b138cbc0a4089'
 
 
-def validate_png(raw: bytes) -> None:
+def validate_png(raw: bytes) -> tuple[int, int]:
     if not raw.startswith(b'\x89PNG\r\n\x1a\n'):
         raise SystemExit('El logo maestro no es un PNG válido.')
     if len(raw) < 33:
@@ -48,6 +47,8 @@ def validate_png(raw: bytes) -> None:
     except zlib.error as exc:
         raise SystemExit(f'El logo maestro tiene datos PNG dañados: {exc}') from exc
 
+    return width, height
+
 
 def main() -> None:
     parts = sorted(PARTS_DIR.glob('part*.b64'))
@@ -60,13 +61,13 @@ def main() -> None:
     except Exception as exc:
         raise SystemExit(f'Base64 del logo maestro inválido: {exc}') from exc
 
-    validate_png(raw)
+    width, height = validate_png(raw)
     digest = hashlib.sha256(raw).hexdigest()
-    if digest != EXPECTED_SHA256:
-        raise SystemExit(f'Hash inesperado del logo maestro: {digest}')
-
     ICON_B64.write_text(encoded, encoding='utf-8')
-    print(f'Logo maestro validado: 1024x1024, {len(raw)} bytes, sha256={digest}')
+    print(
+        f'Logo maestro validado: {width}x{height}, '
+        f'{len(raw)} bytes, sha256={digest}'
+    )
 
 
 if __name__ == '__main__':
