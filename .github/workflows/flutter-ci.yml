@@ -23,6 +23,9 @@ jobs:
       - name: Generar plataforma Android si no existe
         run: flutter create --platforms=android --org com.ecoruta .
 
+      - name: Preparar logo maestro nítido
+        run: python3 tool/prepare_hires_branding.py
+
       - name: Generar branding EcoRuta
         run: python3 tool/generate_branding.py
 
